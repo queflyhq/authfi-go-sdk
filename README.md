@@ -1,6 +1,6 @@
 # AuthFI Go SDK
 
-Official Go SDK for [AuthFI](https://authfi.app) — the identity control plane.
+Official Go SDK for [AuthFI](https://authfi.io) — the identity control plane.
 
 ## Install
 

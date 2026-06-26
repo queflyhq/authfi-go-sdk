@@ -39,7 +39,7 @@ import (
 type Config struct {
 	Tenant        string
 	APIKey        string
-	APIURL        string // default: https://api.authfi.app
+	APIURL        string // default: https://api.authfi.io
 	ApplicationID string // client_id of your application
 	ClientSecret  string // client_secret — required for cloud identity
 	AutoSync      bool
@@ -73,7 +73,7 @@ type contextKey struct{}
 
 func New(cfg Config) *Client {
 	if cfg.APIURL == "" {
-		cfg.APIURL = "https://api.authfi.app"
+		cfg.APIURL = "https://api.authfi.io"
 	}
 	if cfg.JWKSRefresh == 0 {
 		cfg.JWKSRefresh = 5 * time.Minute

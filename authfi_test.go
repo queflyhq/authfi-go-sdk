@@ -21,7 +21,7 @@ func TestNew(t *testing.T) {
 	if c.cfg.Tenant != "acme" {
 		t.Fatalf("expected tenant acme, got %s", c.cfg.Tenant)
 	}
-	if c.cfg.APIURL != "https://api.authfi.app" {
+	if c.cfg.APIURL != "https://api.authfi.io" {
 		t.Fatalf("expected default API URL, got %s", c.cfg.APIURL)
 	}
 	if c.cfg.JWKSRefresh != 5*time.Minute {
@@ -141,7 +141,7 @@ func TestVerifyValidToken(t *testing.T) {
 		"org_slug":    "acme-corp",
 		"exp":         time.Now().Add(time.Hour).Unix(),
 		"iat":         time.Now().Unix(),
-		"iss":         "https://acme.authfi.app",
+		"iss":         "https://acme.authfi.io",
 	})
 
 	claims, err := c.VerifyToken(token)
