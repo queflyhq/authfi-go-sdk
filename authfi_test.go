@@ -397,7 +397,9 @@ func TestSyncSendsPermissions(t *testing.T) {
 	var received map[string]interface{}
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/manage/v1/acme/permissions/sync" {
+		// The edge dispatch is /<slug>/<path>: the slug comes FIRST. This asserted the transposed
+		// shape, which is why the SDK could ship a URL that 404s against every real deployment.
+		if r.URL.Path == "/acme/v1/permissions/sync" {
 			json.NewDecoder(r.Body).Decode(&received)
 			w.Write([]byte(`{"synced":2,"total":2}`))
 			return
