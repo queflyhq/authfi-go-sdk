@@ -175,7 +175,7 @@ func (c *Client) RegisterPermission(name, description string) {
 
 // Start pre-fetches JWKS and syncs permissions.
 func (c *Client) Start() error {
-	authURL := fmt.Sprintf("%s/v1/%s/.well-known/jwks.json", c.cfg.APIURL, c.cfg.Tenant)
+	authURL := fmt.Sprintf("%s/%s/.well-known/jwks.json", c.cfg.APIURL, c.cfg.Tenant)
 	if err := c.jwks.refresh(authURL); err != nil {
 		return fmt.Errorf("authfi: JWKS fetch failed: %w", err)
 	}
@@ -210,7 +210,7 @@ func (c *Client) Sync() error {
 	}
 
 	data, _ := json.Marshal(body)
-	url := fmt.Sprintf("%s/manage/v1/%s/permissions/sync", c.cfg.APIURL, c.cfg.Tenant)
+	url := fmt.Sprintf("%s/%s/v1/permissions/sync", c.cfg.APIURL, c.cfg.Tenant)
 	req, _ := http.NewRequest("PUT", url, bytes.NewReader(data))
 	req.Header.Set("X-API-Key", c.cfg.APIKey)
 	req.Header.Set("Content-Type", "application/json")
@@ -249,7 +249,7 @@ func (c *Client) CloudCredentials(userToken, provider string, opts map[string]st
 	}
 
 	data, _ := json.Marshal(body)
-	authURL := fmt.Sprintf("%s/v1/%s/cloud/credentials", c.cfg.APIURL, c.cfg.Tenant)
+	authURL := fmt.Sprintf("%s/%s/v1/credentials", c.cfg.APIURL, c.cfg.Tenant)
 	req, _ := http.NewRequest("POST", authURL, bytes.NewReader(data))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+userToken)
@@ -280,7 +280,7 @@ func (c *Client) CloudToken(userToken, audience string, ttl int) (string, error)
 	}
 
 	body, _ := json.Marshal(map[string]interface{}{"audience": audience, "ttl": ttl})
-	authURL := fmt.Sprintf("%s/v1/%s/cloud/token", c.cfg.APIURL, c.cfg.Tenant)
+	authURL := fmt.Sprintf("%s/%s/v1/credentials/token", c.cfg.APIURL, c.cfg.Tenant)
 	req, _ := http.NewRequest("POST", authURL, bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+userToken)
@@ -339,7 +339,7 @@ func (c *Client) VerifyToken(token string) (*Claims, error) {
 	}
 
 	// Verify signature
-	authURL := fmt.Sprintf("%s/v1/%s/.well-known/jwks.json", c.cfg.APIURL, c.cfg.Tenant)
+	authURL := fmt.Sprintf("%s/%s/.well-known/jwks.json", c.cfg.APIURL, c.cfg.Tenant)
 	key, err := c.jwks.getKey(header.Kid, authURL)
 	if err != nil {
 		return nil, err
